@@ -16,20 +16,17 @@ First, run the MySQL container with a volume attached for data persistence.
 ```bash
 docker run -d --name mysql-container -v mysql_data:/var/lib/mysql d4vp/mysql-local:1.0.0
 2. Configure the App
-Note: In a production environment, we would use Docker Compose. For this manual setup:
-
 Inspect the MySQL container IP:
 
 Bash
-
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql-container
 Ensure the Django settings.py is configured to use this IP address.
 
 3. Start the Application
-Run the application container, linking it to the database logic (configured via IP).
+Run the application container. Note that we map port 8088 on host to 8080 in container.
 
 Bash
+docker run -d -p 8088:8080 --name app-container d4vp/todoapp:2.0.0
 
-docker run -d -p 8080:8000 --name app-container d4vp/todoapp:2.0.0
 Accessing the Application
-Open your browser and navigate to: http://localhost:8080
+Open your browser and navigate to: http://localhost:8088
